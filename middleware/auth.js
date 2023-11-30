@@ -23,10 +23,20 @@ const authentication = async(req, res, next) => {
         // verify token
         const decode = verifyToken(token)
 
+        console.log("Decoded Token:", decode);
+
+        // if (!decode || !decode.id || !decode.email || !decode.role) {
+        //     throw {
+        //         code: 401,
+        //         message: "Invalid token",
+        //     };
+        // }
+
         const userData = await User.findOne({
             where : {
                 id: decode.id,
-                email: decode.email
+                email: decode.email,
+                role: decode.role
             }
         })
 
@@ -39,12 +49,15 @@ const authentication = async(req, res, next) => {
 
         req.UserData = {
             id: userData.id,
-            email: userData.email
+            email: userData.email,
+            role: userData.role
+
         }
 
         next()
 
     } catch (error) {
+        console.log(error);
         res.status(error.code || 401).json(error.message)
     }
 }

@@ -56,7 +56,7 @@ class UserController {
         try {
             const {
                 email,
-                password
+                password,
             } = req.body
 
             // find di database
@@ -89,7 +89,8 @@ class UserController {
             const token = generateToken({
                 id: data.id,
                 email: data.email,
-                password: data.password
+                password: data.password,
+                role: data.role
             })
 
             res.status(200).json({
